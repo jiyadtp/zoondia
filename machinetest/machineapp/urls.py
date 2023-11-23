@@ -13,6 +13,8 @@ urlpatterns = [
     path('create-url',views.create_url,name='create-url'),
     path('edit-url',views.edit_url,name='edit-url'),
     path('delete-url/<int:id>',views.delete_url,name='delete-url'),
+
+    path('logout', auth_views.LogoutView.as_view(), name="logout"),
 ]
 
 
