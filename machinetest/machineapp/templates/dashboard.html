@@ -247,7 +247,6 @@
 
 <script>
     $(".edit_url").click(function(){
-    alert("jjjjj")
         var id = $(this).attr("data-id")
         var url ="edit-url";
         $.ajax({
@@ -257,7 +256,7 @@
         },
         success: function (data) {
             $("#edit_url").html(data);
-            $('#edit_url').modal('show');
+            $('#edit_url_modal').modal('show');
         }
       });
     })

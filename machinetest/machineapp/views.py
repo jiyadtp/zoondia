@@ -85,6 +85,12 @@ def dashboard(request):
 
 def create_url(request):
     url_name = request.POST.get("url_name").strip()
+    required_fields = []
+    if not url_name:
+        required_fields.append("Url Name")
+    if required_fields:
+        response = f"{', '.join(required_fields)} are required"
+        return JsonResponse({"message": response, "status": "error"})
     short_url = pyshorteners.Shortener()
     shortened = short_url.tinyurl.short(url_name)
     # qr_value = url_name.split("/")
@@ -118,6 +124,40 @@ def edit_url(request):
         'data':data
     }
     return render(request,"edit_url.html",context)
+
+def update_url(request):
+    url_id = request.POST.get("url_id")
+    url_name = request.POST.get("url_name").strip()
+    required_fields = []
+    if not url_name:
+        required_fields.append("Url Name")
+    if required_fields:
+        response = f"{', '.join(required_fields)} are required"
+        return JsonResponse({"message": response, "status": "error"})
+    short_url = pyshorteners.Shortener()
+    shortened = short_url.tinyurl.short(url_name)
+    # qr_value = url_name.split("/")
+    # value1 = shortened
+    # QRcode = qrcode.QRCode(
+    #     error_correction=qrcode.constants.ERROR_CORRECT_H
+    # )
+    # QRcode.add_data(value1)
+    # QRcode.make()
+    # QRimg = QRcode.make_image(back_color="white")
+    # QRimg.save('./qr_image/' + str(qr_value) + '.png')
+    # import os
+    # import base64
+    # url1 = './qr_image/' + str(qr_value) + '.png'
+    # with open(url1, "rb") as image_file:
+    #     encoded_string = base64.b64encode(image_file.read())
+    #     output = encoded_string.decode()
+    # os.remove(url1)
+    # os.remove('./qr_image/' + str(qr_value) + '1.jpeg')
+    user_id = request.session['user_id']
+    data = UrlDetails.objects.create(user_id_id=user_id, url=shortened)
+    messages.success(request, str("Successfully Created"))
+    return redirect(request.META['HTTP_REFERER'])
+
 
 
 def delete_url(request,id):
